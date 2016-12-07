@@ -1,3 +1,12 @@
+/*	=========================================================================
+	Author: Leonardo Citraro
+	Company: 
+	Filename: .hpp
+	Last modifed:   06.12.2016 by Leonardo Citraro
+	Description:    Attempt to track people
+	=========================================================================
+	=========================================================================
+*/
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/video/background_segm.hpp"
@@ -125,9 +134,7 @@ class Scene{
 		
 	public:
 		Scene(){
-			pKNN = createBackgroundSubtractorKNN(history, 
-												 dist2Threshold,
-												 detectShadows);
+			pKNN = createBackgroundSubtractorKNN(history, dist2Threshold, detectShadows);
 		}
 		~Scene(){}
 		
@@ -142,13 +149,8 @@ class Scene{
 			//~ blur( binary, binary, Size(20,20) );
 			//~ threshold(binary, binary, 100.0, 255., CV_THRESH_BINARY);
 
-			components =  connectedComponentsWithStats( binary, 
-														labels, 
-														stats, 
-														centroids, 
-														connectivity, 
-														CV_32S);
-														
+			components =  connectedComponentsWithStats(binary, labels, stats, centroids, connectivity, CV_32S);
+
 			vector<int> updated;
 			for( size_t i=1; i<components; ++i){
 				if(stats.at<int>(i,4) > min_connected_pixels && stats.at<int>(i,4) < max_connected_pixels){
@@ -236,7 +238,7 @@ class Scene{
 int main(int argc, char* argv[])
 {
     //VideoCapture cap("./tennis_sample.mp4");
-	VideoCapture cap("./campus4-c1.avi");
+	VideoCapture cap(argv[1]);
 
     if ( !cap.isOpened() ){
          cout << "Cannot open the video file" << endl;
